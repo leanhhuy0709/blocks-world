@@ -1,0 +1,48 @@
+Step 1:
+init = [[b, a, f, c], [e], [d, g]]
+goal = [[a, e, d, c, b], [f], [g]]
+
+box.st is [x, y] when curr[x][y] = box
+box.ed is [x, y] when goal[x][y] = box
+
+check[i] = n thì curr[i] giống với goal[i] từ vị trí n - 1 về trước
+
+Đặt các box chưa đúng vị trí vào Stack
+
+stack = [b a, f, c, b, e, d, g]
+
+Step 2:
+Sắp xếp lại stack theo giá trị: res = val1 * NUM_BOX + val2 + isInTable * NUM_BOX / 2 (Giá trị nhỏ nhất ở đỉnh stack)
+Với val1 là số box nằm giữa nó và box đỉnh của vị trí nó đang được đặt (Nếu nó là box đỉnh thì val1 là 0)
+    val2 là số thứ tự của box đó tại trạng thái goal (ví dụ val2 của a là 0 vì ở trạng thái goal, a có vị trí là 0 ở ô 1)
+    NUM_BOX là một số lớn hơn nhiều so với val1, val2 dùng để chỉ sự ưu tiên của val1 trước val2
+    isInTable là biến có giá trị 0 hoặc 1, để chỉ rằng box đó có được đặt ra Table hay chưa (isInTable * NUM_BOX / 2 có ý nghĩa là những box được đặt ra Table sẽ luôn có thứ tự sau các box có val1 là 0 và trên các box có val1 là 0.5)
+
+Nếu Stack rỗng, bước sang Step 3
+Lấy giá trị đầu tiên ở đỉnh Stack ra là box
+Nếu vị trí đích của box là ed[0] có giá trị check[ed[0]] bằng thứ tự của box ở goal:
+    Nếu ở vị trí ed, có đúng ed[1] box:
+        Ta di chuyển box từ vị trí hiện tại của nó đến ed[0]
+        Cập nhật lại giá trị check: check[ed[0]] += 1
+        Ta kiểm tra xem ở vị trí ed[0] này có đạt giống goal hay chưa:
+        Nếu có, ta xem nó như 1 ô của Table
+        Tương tự với vị trí st[0] (Vị trí ban đầu của box)
+    Ngược lại:
+        Nếu vị trí đích ed[0] của box bằng st[0]. Tức là box này đang ở đúng ô nhưng sai thứ tự: 
+            Ta kiểm tra số ô khả dụng của Table (Trong bài này số ô khả dụng của Table cần được tối ưu)
+            Nếu có, tiếp tục. Nếu không, ta thêm 1 ô mới vào và tiếp tục
+            Ta di chuyển box hiện tại đến Table và đánh dấu vào nó isInTable = 1
+            Thêm box này vào lại Stack
+        Vị trí đích khác nhưng đã có một hoặc nhiều ô chiếm chổ:
+            Ta đặt box2 là curr[ed[0]][len(curr[ed[0]]) - 1] (box đầu tiên ở ô đích)
+            Ta di chuyển box2 ra Table và đánh dấu vào nó isInTable = 1
+            Thêm box này vào lại Stack
+Ngược lại, nếu vị trí đích của box là ed[0] có giá trị check[ed[0]] bé hơn thứ tự của box ở goal:
+    Trong trường hợp này box hiện tại cần đợi một box khác có thứ tự trước
+    Ta di chuyển box hiện tại đến Table và đánh dấu vào nó isInTable = 1
+    Thêm box này vào lại Stack
+
+Step 3: Kết thúc thuật toán
+
+Trong thực tế, ta luôn có thể giải mọi bài toán Blocks World bằng việc đặt từng Block ra Table và thêm từng Block lại vào đúng vị trí ở goal
+Thuật toán này áp dụng nguyên lý trên, khi không thể đặt đến vị trí mong muốn, sẽ đặt ra Table
