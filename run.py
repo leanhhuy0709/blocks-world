@@ -1,7 +1,7 @@
 import random as rd, time, math
 rd.seed(time.time())
-NUM_BOX = 20
-NUM_CELL = 10
+NUM_BOX = 6
+NUM_CELL = 4
 IS_USE_RANDOM = True
 
 class Box:
