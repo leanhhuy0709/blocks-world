@@ -1,7 +1,8 @@
 import random as rd, time, math
+from benchmark_cfg import cfg
 rd.seed(time.time())
-NUM_BOX = 6
-NUM_CELL = 4
+NUM_BOX = cfg.num_box
+NUM_CELL = cfg.num_column
 IS_USE_RANDOM = True
 
 class Box:
@@ -296,4 +297,5 @@ def solve2(init, goal):
         goal.pop()    
     return moves, numTableSlot
 
-main()
+if __name__ == '__main__':
+    main()
