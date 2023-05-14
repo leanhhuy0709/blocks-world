@@ -1,15 +1,14 @@
 import copy
 import random
 import time
-import math
 random.seed(time.time())
 
 
 class WorldState:
     init_state = []
     goal_state = []
-    num_box = 10
-    num_column = 7
+    num_box = 20
+    num_column = 10
     use_random_states = True
     alpha = 0.03
 
@@ -190,7 +189,7 @@ def initNotRandom(init, goal, boxes):
         raise AssertionError("Manual goal state is wrong")
 
 def main():
-    boxes = list(map(lambda x: str(x), list(range(WorldState.num_box))))
+    boxes = map(lambda x: str(x), list(range(WorldState.num_box)))
 
     if WorldState.use_random_states:
         initRandom(WorldState.init_state, WorldState.goal_state, boxes)
